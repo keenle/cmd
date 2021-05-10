@@ -56,16 +56,37 @@ Plug 'lambdalisue/nerdfont.vim'                 "
 Plug 'lambdalisue/fern-renderer-nerdfont.vim'   " 
 Plug 'lambdalisue/glyph-palette.vim'            "
 Plug 'lambdalisue/fern-hijack.vim'              " Use Fern as default file manager
-"Plug 'vifm/vifm.vim'                            " File namager
+"Plug 'vifm/vifm.vim'                            " File manager
+
+" Search
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+"Plug 'junegunn/fzf.vim'
+
+" Command line
+Plug 'tpope/vim-eunuch'                         " Run *nix shell commans in Vim
 
 Plug 'itchyny/lightline.vim'                    " Statusbar
+
+" WiKi
 Plug 'vimwiki/vimwiki'                          " Vim WiKi
+
+" Writing
 Plug 'tpope/vim-markdown'                       " Markdown highlighting. Primarily to highligh blocks of code.
+
+" Codding
+Plug 'tpope/vim-commentary'                     " Comment stuff out. E.g. `gcc`, `gcap`, `3gcc`.
+Plug 'tpope/vim-surround'                       " Surround with parantheses, brackets, quotes, tags, and more. E.g. `ysiw]`, `ysiw[`, `yss)`, `yss(`, `ds(`, `ds)`, `ysiw<b>`.
+Plug 'tpope/vim-characterize'                   " Character decimal, octal, and hex representation. E.g. `ga`.
+"Plug 'tpope/vim-repeat'                         " Propper repeat of the last <em>command</em>. TODO: Does not work for vim-surround.
+Plug 'glts/vim-magnum' | Plug 'glts/vim-radical' " Magnum is prereq. for radical. `gA` - show number under cursor as dec, hex, oct, bin.
+Plug 'tpope/vim-speeddating'                    " <C-A>/<C-X> to increment/decrement dates.
+
 " Git
 Plug 'tpope/vim-fugitive'                       " Git plugin
 Plug 'junegunn/gv.vim'                          " Git log :GV :GV! :GV?
 Plug 'airblade/vim-gitgutter'                   " Git vertical status bar at left with changes
 Plug 'lambdalisue/fern-git-status.vim'          " Git status for a file in Fern 
+
 " Colors
 Plug 'arcticicestudio/nord-vim'                 " Color schema Nord: https://www.nordtheme.com/docs/ports/vim/installation/
 "Plug 'skammer/vim-css-color'                    " Detect HEX colors and change background behind them
@@ -73,21 +94,31 @@ Plug 'arcticicestudio/nord-vim'                 " Color schema Nord: https://www
 " Initialize plugin system
 call plug#end()
 
+" Text, Tabs and Spaces
 set encoding=utf-8
-filetype plugin indent on                       " enable plugin and indent
 syntax on
 set listchars=tab:→\ ,eol:↲,nbsp:␣,trail:·,extends:⟩,precedes:⟨ " make control characters visible
 "set list                                        " show special characters
 set showbreak=↪\ 
+set nowrap
+set expandtab                                   " use spaces instead of tabs
+set shiftwidth=4                                " number of spaces to use for indent
+set tabstop=4
+set softtabstop=4                               " number of spaces to use for <Tab> in insert mode
+set smarttab                                    " <Tab> in insert mode indents with spaces
+set autoindent                                  " indent new lines as previous line
+filetype plugin indent on                       " enable plugin and indent
 set nu rnu                                      " line numbers and relative numbering
 set colorcolumn=120                             " vertical bar at 120 charaters
 highlight ColorColumn ctermbg=darkgray          " Show vertical line at 120 chars mark
 set laststatus=2                                " more info in statusbar
 set nocompatible                                " turn off vi compatibility
-set backspace=start,eol,indent                  " turn off vi compatibility (continued)
+set backspace=start,eol,indent                  " (continued: turn off vi compatibility)
 "set hidden                                      " let vim switch between buffers while changes in the current buffer are not saved
 set splitbelow
 set splitright
+set timeoutlen=1000 ttimeoutlen=0               " eliminating delays on <Esc> in vim. More https://www.johnhawthorn.com/2012/09/vi-escape-delays/
+set esckeys                                     " (continued: eliminating delays...)
 
 " Spellchecking
 set spelllang=en_us
@@ -99,18 +130,10 @@ set spelllang=en_us
 colorscheme nord                                " color scheme
 set background=dark
 
-" Tabs
-set nowrap
-set expandtab                                   " use spaces instead of tabs
-set shiftwidth=4                                " number of spaces to use for indent
-set tabstop=4
-set softtabstop=4                               " number of spaces to use for <Tab> in insert mode
-set smarttab                                    " <Tab> in insert mode indents with spaces
-set autoindent                                  " indent new lines as previous line
-
 " Search
 set ignorecase                                  " case insensitive search and completion
-set hlsearch                                    " hightlight search results
+set smartcase                                   " when search has uppercase then match case
+set hlsearch                                    " highlight search results
 set scrolloff=8                                 " number of lines before the end of the screen to scroll
 set incsearch                                   " search incrementally
 
@@ -136,7 +159,6 @@ augroup my-glyph-palette
 augroup END
 
 " {{ itchyny/lightline.vim }}
-
 " Git status
 function! LightlineGitGutter()
     if &buftype ==# '' && exists('*GitGutterGetHunkSummary')
@@ -190,3 +212,7 @@ nmap <F2> :w<CR>
 nmap <F7> :setlocal spell!<CR>
 nmap <F8> :set list!<CR>
 nmap <C-f> :Fern . -drawer -toggle<CR>
+
+" Custom commands
+command! ConfigEdit execute ":e $MYVIMRC"
+command! ConfigReload execute "source ~/.vimrc"
