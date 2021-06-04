@@ -56,30 +56,45 @@ Plug 'lambdalisue/nerdfont.vim'                 "
 Plug 'lambdalisue/fern-renderer-nerdfont.vim'   " 
 Plug 'lambdalisue/glyph-palette.vim'            "
 Plug 'lambdalisue/fern-hijack.vim'              " Use Fern as default file manager
-"Plug 'vifm/vifm.vim'                            " File manager
+Plug 'vifm/vifm.vim'                            " File manager
 
 " Search
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 "Plug 'junegunn/fzf.vim'
 
-" Command line
+" Terminal
 Plug 'tpope/vim-eunuch'                         " Run *nix shell commans in Vim
 
 Plug 'itchyny/lightline.vim'                    " Statusbar
 
-" WiKi
-Plug 'vimwiki/vimwiki'                          " Vim WiKi
-
 " Writing
+Plug 'vimwiki/vimwiki'                          " Vim WiKi
 Plug 'tpope/vim-markdown'                       " Markdown highlighting. Primarily to highligh blocks of code.
+" TODO: Undo
+" Plug 'mbbill/undotree', {'on': 'UndotreeToggle'} " Undo tree to see recent changes
+Plug 'chrisbra/unicode.vim'                     " Unicode and digraphs characters handling
 
 " Codding
 Plug 'tpope/vim-commentary'                     " Comment stuff out. E.g. `gcc`, `gcap`, `3gcc`.
 Plug 'tpope/vim-surround'                       " Surround with parantheses, brackets, quotes, tags, and more. E.g. `ysiw]`, `ysiw[`, `yss)`, `yss(`, `ds(`, `ds)`, `ysiw<b>`.
+" Plug 'wellle/targets.vim'                       " more edit targets. E.g. [ or ,
+" Plug 'jiangmiao/auto-pairs'                     " auto close (, {, " etc.
 Plug 'tpope/vim-characterize'                   " Character decimal, octal, and hex representation. E.g. `ga`.
-"Plug 'tpope/vim-repeat'                         " Propper repeat of the last <em>command</em>. TODO: Does not work for vim-surround.
+"Plug 'tpope/vim-repeat'                         " Proper repeat of the last <em>command</em>. TODO: Does not work for vim-surround.
 Plug 'glts/vim-magnum' | Plug 'glts/vim-radical' " Magnum is prereq. for radical. `gA` - show number under cursor as dec, hex, oct, bin.
 Plug 'tpope/vim-speeddating'                    " <C-A>/<C-X> to increment/decrement dates.
+" TODO: Syntax
+" Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' } " Syntax highlighting. Update parsers on update.
+" Plug 'nvim-treesitter/nvim-playground'
+" Plug 'uiiaoo/java-syntax.vim'                   " Better java syntax highlighting
+" TODO: Snippets
+" Plug 'honza/vim-snippets'
+" TODO: CoC
+" Plug 'neoclide/coc.nvim`
+" TODO: Debugger
+" Plug 'puremourning/vimspector'
+" TODO: Tags
+" Plug 'ludovicchabant/vim-gutentags'
 
 " Git
 Plug 'tpope/vim-fugitive'                       " Git plugin
@@ -93,6 +108,17 @@ Plug 'arcticicestudio/nord-vim'                 " Color schema Nord: https://www
 
 " Initialize plugin system
 call plug#end()
+
+" lua <<EOF
+" require'nvim-treesitter.configs'.setup {
+"   ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+"   ignore_install = { "javascript" }, -- List of parsers to ignore installing
+"   highlight = {
+"     enable = true,              -- false will disable the whole extension
+"     disable = { "c", "rust" },  -- list of language that will be disabled
+"   },
+" }
+" EOF
 
 " Text, Tabs and Spaces
 set encoding=utf-8
@@ -109,9 +135,9 @@ set smarttab                                    " <Tab> in insert mode indents w
 set autoindent                                  " indent new lines as previous line
 filetype plugin indent on                       " enable plugin and indent
 set nu rnu                                      " line numbers and relative numbering
-set colorcolumn=120                             " vertical bar at 120 charaters
+set colorcolumn=120                             " vertical bar at 120 characters
 highlight ColorColumn ctermbg=darkgray          " Show vertical line at 120 chars mark
-set laststatus=2                                " more info in statusbar
+set laststatus=2                                " more info in status bar
 set nocompatible                                " turn off vi compatibility
 set backspace=start,eol,indent                  " (continued: turn off vi compatibility)
 "set hidden                                      " let vim switch between buffers while changes in the current buffer are not saved
@@ -119,13 +145,18 @@ set splitbelow
 set splitright
 set timeoutlen=1000 ttimeoutlen=0               " eliminating delays on <Esc> in vim. More https://www.johnhawthorn.com/2012/09/vi-escape-delays/
 set esckeys                                     " (continued: eliminating delays...)
+set lazyredraw                                  " no redraw during macro
+set fillchars=vert:│,fold:-                     " Full vertical line as a separator
+
+" Turn off the bell
+set visualbell t_vb=                            " no visual bell and flash
 
 " Spellchecking
 set spelllang=en_us
 
 " Colors
-" TODO: Following line defines a user hightlight group that later can be activated with:
-" `:match ExtraWhitespace /\s\+$/` - to use red background for all trailing whitespaces
+" TODO: Following line defines a user highlight group that later can be activated with:
+" `:match ExtraWhitespace /\s\+$/` - to use red background for all trailing white spaces
 "autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
 colorscheme nord                                " color scheme
 set background=dark
@@ -138,9 +169,11 @@ set scrolloff=8                                 " number of lines before the end
 set incsearch                                   " search incrementally
 
 " Convenience with commands
-set showcmd                                     " show partial command status
+set showcmd                                     " show partial command status in status bar
 set wildmenu                                    " show option in bottom menu when <Tab> pressed
 set wildmode=longest,full                       " show full list
+" TODO: Undo history. Comine with mbbill/undotree plugin.
+" set undofile                                    " keep undo history between file reopens
 
 " ====================
 " PLUGIN CONFIGURATION
@@ -205,6 +238,9 @@ let g:lightline = {
 let g:markdown_fenced_languages = ['html', 'css', 'python', 'bash', 'javascript']
 let g:markdown_syntax_conceal = 0
 "let g:markdown_minlines = 100
+
+" File type specifics
+autocmd Filetype java set maprg=javac\ -g\ %
 
 " Keybindings
 nmap <silent> <C-L> <C-L>:nohlsearch<CR>:match<CR>:diffupdate<CR>
