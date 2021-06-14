@@ -5,9 +5,7 @@
 
 " let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
 " if empty(glob(data_dir . '/autoload/plug.vim'))
-"     silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-"     autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-" endif
+"     silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim' "     autocmd VimEnter * PlugInstall --sync | source $MYVIMRC " endif
 
 " First install vim-plug:
 " curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -151,6 +149,7 @@ colorscheme nord                                " color scheme
 " {{ lambdalisue/fern.vim }}
 
 let g:fern#renderer = "nerdfont"
+let g:fern#default_hidden = 1
 
 " {{ lambdalisue/glyph-palette.vim }}
 
@@ -209,10 +208,11 @@ let g:lightline = {
 ""let g:markdown_minlines = 100
 
 " vimwiki/vimwiki
-let g:vimwiki_list = [{
-            \  'path': '~/vimwiki/',
-            \  'syntax': 'markdown', 'ext': '.md'
-            \}]
+let g:vimwiki_list = [
+            \{'path': '~/vimwiki/', 'syntax': 'markdown', 'ext': '.md'},
+            \{'path': '~/vimwiki/math', 'syntax': 'markdown', 'ext': '.md'},
+            \{'path': '~/vimwiki/programing', 'syntax': 'markdown', 'ext': '.md'},
+            \{'path': '~/vimwiki/linux', 'syntax': 'markdown', 'ext': '.md'}]
 " links with full file name; [text](file.md) instead of [text](file)
 let g:vimwiki_markdown_link_ext = 1
                      
@@ -232,6 +232,7 @@ let g:vim_markdown_new_list_item_indent = 2
 let g:vim_markdown_no_extensions_in_markdown = 1                    " Github/Gitlab compatibility
 let g:vim_markdown_autowrite = 1                                    " auto-save changes before navigating links
 let g:vim_markdown_follow_achor = 1
+let g:vim_markdown_emphasis_multiline = 1
 
 " vifm/vifm.vim
 " Vifm DOES NOT properly replace netrw in Vim. Details here https://github.com/vifm/vifm.vim/issues/44
