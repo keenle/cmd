@@ -1,3 +1,7 @@
+set nocompatible
+" The following line causes trouble with syntax
+" set runtimepath=~/.vim,$VIM/vimfiles,$VIMRUNTIME
+
 " 4. Fix vim-plug installation script: Do not proceed with plugins config
 "    until plugins are actually installed.
 
@@ -94,7 +98,7 @@ set smarttab                                    " <Tab> in insert mode indents w
 set autoindent                                  " indent new lines as previous line
 filetype plugin indent on                       " enable plugin and indent
 set nu rnu                                      " line numbers and relative numbering
-set colorcolumn=120                             " vertical bar at 120 characters
+set colorcolumn=80                             " vertical bar at 80 characters
 highlight ColorColumn ctermbg=darkgray          " Show vertical line at 120 chars mark
 set laststatus=2                                " more info in status bar
 set nocompatible                                " turn off vi compatibility
@@ -241,9 +245,6 @@ let g:vim_markdown_emphasis_multiline = 1
 " let g:vifm_replace_netrw = 1
 
 " }}}
-
-" File type specifics
-autocmd Filetype java set maprg=javac\ -g\ %
 
 " Keybindings
 nmap <silent> <C-L> <C-L>:nohlsearch<CR>:match<CR>:diffupdate<CR>   " clean search selection
